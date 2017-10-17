@@ -6,7 +6,10 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
- * Created by 80011433 on 2017/10/17.
+ * @author: houtrry
+ * @time: 2017/10/17 19:02
+ * @version: $Rev$
+ * @desc: ${TODO}
  */
 
 public class SlideRuleView extends View {
@@ -39,4 +42,6 @@ public class SlideRuleView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
     }
+
+
 }
