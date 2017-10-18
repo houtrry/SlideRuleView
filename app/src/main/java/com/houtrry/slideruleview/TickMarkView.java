@@ -21,7 +21,7 @@ public class TickMarkView extends View {
     /**
      * 标记线的颜色
      */
-    private int mTickMarkColor = Color.parseColor("#ff99cc00");
+    private int mTickMarkColor = Color.parseColor("#ff00ddff");
     /**
      * 标记线的宽度
      */
@@ -33,7 +33,6 @@ public class TickMarkView extends View {
     private Paint mTickMarkPaint;
     private int mWidth;
     private int mHeight;
-    private float mLeftTickMark;
 
     public TickMarkView(Context context) {
         this(context, null);
@@ -57,13 +56,13 @@ public class TickMarkView extends View {
         mTickMarkPaint.setColor(mTickMarkColor);
         mTickMarkPaint.setStrokeWidth(mTickMarkWidth);
         mTickMarkPaint.setStrokeCap(Paint.Cap.ROUND);
-
+        mTickMarkPaint.setStyle(Paint.Style.STROKE);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//        setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
+        setMeasuredDimension((int) mTickMarkWidth, (int) mTickMarkHeight);
     }
 
     @Override
@@ -71,13 +70,12 @@ public class TickMarkView extends View {
         super.onSizeChanged(w, h, oldw, oldh);
         mWidth = w;
         mHeight = h;
-        mLeftTickMark = mWidth * 0.5f - mTickMarkWidth * 0.5f;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawRect(mLeftTickMark, 0, mLeftTickMark + mTickMarkWidth, mTickMarkHeight, mTickMarkPaint);
+        canvas.drawColor(Color.TRANSPARENT);
+        canvas.drawLine(mWidth * 0.5f, 0, mWidth * 0.5f, mTickMarkHeight + mTickMarkWidth * 0.5f, mTickMarkPaint);
     }
-
 }

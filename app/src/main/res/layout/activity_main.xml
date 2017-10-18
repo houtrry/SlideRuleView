@@ -8,11 +8,43 @@
     tools:context="com.houtrry.slideruleview.MainActivity">
 
     <com.houtrry.slideruleview.TickMarkView
-        android:layout_width="200dp"
-        android:layout_height="100dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/tickMarkView"
+        android:layout_width="5dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+
+    <com.houtrry.slideruleview.RulerScaleView
+        android:id="@+id/rulerScaleView"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tickMarkView"
+        />
+
+    <com.houtrry.slideruleview.SlideRuleView
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rulerScaleView">
+
+        <com.houtrry.slideruleview.RulerScaleView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        <com.houtrry.slideruleview.TickMarkView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            />
+
+    </com.houtrry.slideruleview.SlideRuleView>
 
 </android.support.constraint.ConstraintLayout>

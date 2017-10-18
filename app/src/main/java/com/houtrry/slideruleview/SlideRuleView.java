@@ -1,20 +1,29 @@
 package com.houtrry.slideruleview;
 
 import android.content.Context;
-import android.graphics.Canvas;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * @author: houtrry
  * @time: 2017/10/17 19:02
- * @version: $Rev$
+ * @versio: $Rev$
  * @desc: ${TODO}
  */
 
-public class SlideRuleView extends View {
+public class SlideRuleView extends ViewGroup {
 
     private static final String TAG = SlideRuleView.class.getSimpleName();
+    private RulerScaleView mRulerScaleView;
+    private View mTickMarkView;
+    private ViewDragHelper mViewDragHelper;
+    private int mLastDragState;
+    private int mCurrentDragLeft;
 
     public SlideRuleView(Context context) {
         this(context, null);
@@ -29,19 +38,106 @@ public class SlideRuleView extends View {
         init(context, attrs);
     }
 
-    private void init(Context context, AttributeSet attrs) {
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        Log.d(TAG, "onLayout: changed: "+changed+", l: "+l+", t: "+t+", r: "+r+", b: "+b);
+        int measuredWidth = getMeasuredWidth();
+        Log.d(TAG, "onLayout: measuredWidth: "+measuredWidth);
+        mRulerScaleView.layout(0, 0, mRulerScaleView.getMeasuredWidth(), mRulerScaleView.getMeasuredHeight());
+        mTickMarkView.layout((int)(getMeasuredWidth()*0.5f - mTickMarkView.getMeasuredWidth() * 0.5f+0.5f), 0, (int) (getMeasuredWidth()*0.5f + mTickMarkView.getMeasuredWidth() * 0.5f), mTickMarkView.getMeasuredHeight());
+    }
 
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        int measuredWidthRulerScale = mRulerScaleView.getMeasuredWidth();
+        int measuredWidth = getMeasuredWidth();
+
+        Log.d(TAG, "onFinishInflate: measuredWidthRulerScale: "+measuredWidthRulerScale+", measuredWidth: "+measuredWidth);
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        mRulerScaleView = (RulerScaleView) getChildAt(0);
+        mTickMarkView = getChildAt(1);
+    }
+
+    private void init(Context context, AttributeSet attrs) {
+        mViewDragHelper = ViewDragHelper.create(this, mViewDragHelperCallback);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        measureChildren(widthMeasureSpec, heightMeasureSpec);
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        return mViewDragHelper.shouldInterceptTouchEvent(ev);
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        mViewDragHelper.processTouchEvent(event);
+        return true;
+    }
 
+    private ViewDragHelper.Callback mViewDragHelperCallback = new ViewDragHelper.Callback() {
+        @Override
+        public boolean tryCaptureView(View child, int pointerId) {
+            return mRulerScaleView == child;
+        }
+
+        @Override
+        public int clampViewPositionHorizontal(View child, int left, int dx) {
+            Log.d(TAG, "clampViewPositionHorizontal: left: "+left+", mRulerScaleView.getMeasuredWidth(): "+mRulerScaleView.getMeasuredWidth()+", "+getMeasuredWidth());
+            //控制滑动边界
+            if (left > 0) {
+                left = 0;
+            } else if (left < getMeasuredWidth() - mRulerScaleView.getMeasuredWidth()) {
+                left = getMeasuredWidth() - mRulerScaleView.getMeasuredWidth();
+            }
+
+            return left;
+        }
+
+        @Override
+        public void onViewReleased(View releasedChild, float xvel, float yvel) {
+            super.onViewReleased(releasedChild, xvel, yvel);
+            Log.d(TAG, "onViewReleased: xvel: "+xvel+", yvel: "+yvel);
+            mViewDragHelper.flingCapturedView(getMeasuredWidth() - mRulerScaleView.getMeasuredWidth(), 0, 0, 0);
+            ViewCompat.postInvalidateOnAnimation(SlideRuleView.this);
+        }
+
+        @Override
+        public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
+            super.onViewPositionChanged(changedView, left, top, dx, dy);
+            mRulerScaleView.calculatePosition(left);
+            Log.d(TAG, "onViewPositionChanged: left: "+left+", top: "+top+", dx: "+dx+", dy: "+dy);
+            mCurrentDragLeft = left;
+        }
+
+        @Override
+        public void onViewDragStateChanged(int state) {
+            super.onViewDragStateChanged(state);
+            if (mLastDragState != ViewDragHelper.STATE_IDLE && state == ViewDragHelper.STATE_IDLE) {
+                Log.d(TAG, "onViewDragStateChanged: 赶紧去处理一下");
+                int finalLeft = mRulerScaleView.calculateLatestTick(mCurrentDragLeft);
+                mViewDragHelper.smoothSlideViewTo(mRulerScaleView, finalLeft, 0);
+                ViewCompat.postInvalidateOnAnimation(SlideRuleView.this);
+            }
+            mLastDragState = state;
+        }
+    };
+
+    @Override
+    public void computeScroll() {
+        if (mViewDragHelper.continueSettling(true)) {
+            ViewCompat.postInvalidateOnAnimation(this);
+        }
+    }
 }
