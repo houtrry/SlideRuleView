@@ -27,12 +27,13 @@
         />
 
     <com.houtrry.slideruleview.SlideRuleView
+        android:id="@+id/slideRuleView"
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:layout_marginTop="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rulerScaleView">
+        app:layout_constraintTop_toBottomOf="@id/rulerScaleView">
 
         <com.houtrry.slideruleview.RulerScaleView
             android:layout_width="match_parent"
@@ -46,5 +47,19 @@
             />
 
     </com.houtrry.slideruleview.SlideRuleView>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        tools:text="ha"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        android:includeFontPadding="false"
+        android:layout_marginTop="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/slideRuleView"/>
 
 </android.support.constraint.ConstraintLayout>
