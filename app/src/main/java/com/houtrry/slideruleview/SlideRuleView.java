@@ -117,14 +117,17 @@ public class SlideRuleView extends ViewGroup {
         @Override
         public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
             super.onViewPositionChanged(changedView, left, top, dx, dy);
-            float calculateValue = mRulerScaleView.calculatePosition(left);
+            float calculateValue = mRulerScaleView.calculateCurrentValue(left);
             if (mSlideRuleListener != null) {
                 if (mLastCalculateValue != calculateValue) {
-                    mSlideRuleListener.slideRule(calculateValue);
+                   mSlideRuleListener.slideRule(calculateValue);
+                    Log.d(TAG, "onViewPositionChanged: "+Thread.currentThread().getName());
+                    mLastCalculateValue = calculateValue;
                 }
             }
-            mLastCalculateValue = calculateValue;
-            Log.d(TAG, "onViewPositionChanged: left: "+left+", top: "+top+", dx: "+dx+", dy: "+dy);
+
+
+            Log.d(TAG, "onViewPositionChanged: left: "+left+", top: "+top+", dx: "+dx+", dy: "+dy+", calculateValue: " +calculateValue);
             mCurrentDragLeft = left;
         }
 

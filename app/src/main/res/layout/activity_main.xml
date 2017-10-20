@@ -1,39 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.houtrry.slideruleview.MainActivity">
 
     <com.houtrry.slideruleview.TickMarkView
         android:id="@+id/tickMarkView"
         android:layout_width="5dp"
         android:layout_height="25dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"/>
 
     <com.houtrry.slideruleview.RulerScaleView
         android:id="@+id/rulerScaleView"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
+        android:layout_gravity="center_horizontal"
         android:layout_height="100dp"
         android:layout_marginTop="20dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tickMarkView"
         />
 
     <com.houtrry.slideruleview.SlideRuleView
         android:id="@+id/slideRuleView"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rulerScaleView">
+        android:layout_marginTop="20dp">
 
         <com.houtrry.slideruleview.RulerScaleView
             android:layout_width="match_parent"
@@ -52,6 +46,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:textColor="@color/colorAccent"
         tools:text="ha"
         android:textAllCaps="false"
@@ -59,7 +54,6 @@
         android:includeFontPadding="false"
         android:layout_marginTop="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/slideRuleView"/>
+        app:layout_constraintRight_toRightOf="parent"/>
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

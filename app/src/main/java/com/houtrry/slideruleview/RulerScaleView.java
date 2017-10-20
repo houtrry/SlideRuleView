@@ -183,16 +183,19 @@ public class RulerScaleView extends View {
         drawBackground(canvas);
         drawZeroLine(canvas);
         drawScaleLineAndText(canvas);
-
     }
 
-    public float calculatePosition(int left) {
-        Log.d(TAG, "calculatePosition: left: " + left + ", (Math.abs(left): " + (Math.abs(left)));
+    /**
+     * 计算当前的值
+     *
+     * @param left
+     * @return
+     */
+    public float calculateCurrentValue(int left) {
+        Log.d(TAG, "calculateCurrentValue: left: " + left + ", (Math.abs(left): " + (Math.abs(left)));
         int position = (int) ((Math.abs(left)) / mGapDistance);
         float currentValue = mMinValue + position * mGridGapValue;
-
-        Log.d(TAG, "calculatePosition: position: " + position + ", currentValue: " + currentValue);
-        return currentValue;
+        return AndroidTools.roundKeepADecimal(currentValue);
     }
 
     /**
@@ -209,15 +212,30 @@ public class RulerScaleView extends View {
         return finalLeft * (currentDragLeft < 0 ? -1 : 1);
     }
 
+    /**
+     * 画背景
+     *
+     * @param canvas
+     */
     private void drawBackground(Canvas canvas) {
         canvas.drawColor(mRulerScaleBackgroundColor);
     }
 
+    /**
+     * 画零线
+     *
+     * @param canvas
+     */
     private void drawZeroLine(Canvas canvas) {
         final float zeroLineY = mScaleLineType == TYPE_TOP ? 0 : mHeight;
         canvas.drawLine(0, zeroLineY, mWidth, zeroLineY, mZeroLinePaint);
     }
 
+    /**
+     * 画大小刻度线 以及大刻度线对应的文字
+     *
+     * @param canvas
+     */
     private void drawScaleLineAndText(Canvas canvas) {
         boolean isLongScale;
         float currentX = mOriginalWidth * 0.5f;
@@ -268,6 +286,12 @@ public class RulerScaleView extends View {
 
     private int mOriginalWidth = 0;
 
+    /**
+     * 测量宽度
+     *
+     * @param widthMeasureSpec
+     * @return
+     */
     private int measureWidth(int widthMeasureSpec) {
         int result;
         int mode = MeasureSpec.getMode(widthMeasureSpec);
@@ -283,6 +307,12 @@ public class RulerScaleView extends View {
         return result;
     }
 
+    /**
+     * 测量高度
+     *
+     * @param heightMeasureSpec
+     * @return
+     */
     private int measureHeight(int heightMeasureSpec) {
         int result;
         int mode = MeasureSpec.getMode(heightMeasureSpec);
