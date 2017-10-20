@@ -23,7 +23,7 @@ public class SlideRuleView extends ViewGroup {
 
     private static final String TAG = SlideRuleView.class.getSimpleName();
     private RulerScaleView mRulerScaleView;
-    private View mTickMarkView;
+    private TickMarkView mTickMarkView;
     private ViewDragHelper mViewDragHelper;
     private int mLastDragState;
     private int mCurrentDragLeft;
@@ -83,6 +83,15 @@ public class SlideRuleView extends ViewGroup {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SlideRuleView);
 
         int tick_color = typedArray.getColor(R.styleable.SlideRuleView_tick_color, Color.RED);
+        float tick_width = typedArray.getDimension(R.styleable.SlideRuleView_tick_width, 10);
+        float tick_height = typedArray.getDimension(R.styleable.SlideRuleView_tick_height, 50);
+        mTickMarkView.setTickMarkColor(tick_color);
+        mTickMarkView.setTickMarkWidth(tick_width);
+        mTickMarkView.setTickMarkHeight(tick_height);
+
+
+
+
 
 
         typedArray.recycle();
