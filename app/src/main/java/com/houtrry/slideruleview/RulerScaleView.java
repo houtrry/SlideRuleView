@@ -96,7 +96,7 @@ public class RulerScaleView extends View {
     /**
      * 上面文字, 下面刻度
      */
-    private static final int TYPE_Bottom = 0x0002;
+    private static final int TYPE_BOTTOM = 0x0002;
 
     /**
      * 滑动尺的类型(默认是上面刻度, 下面文字)
@@ -113,7 +113,13 @@ public class RulerScaleView extends View {
     private float mGapDistance = 20;
     private Paint mZeroLinePaint;
 
+    /**
+     * 文字大小
+     */
     private float mScaleTextSize = 30;
+    /**
+     * 文字颜色
+     */
     private int mScaleTextColor = Color.parseColor("#ff222222");
     private Paint mScaleTextPaint;
     private float mTextMargin = 50;
@@ -227,7 +233,7 @@ public class RulerScaleView extends View {
      * @param canvas
      */
     private void drawZeroLine(Canvas canvas) {
-        final float zeroLineY = mScaleLineType == TYPE_TOP ? 0 : mHeight;
+        final float zeroLineY = mScaleLineType == TYPE_TOP ? mZeroLienWidth*0.5f : mHeight-mZeroLienWidth*0.5f;
         canvas.drawLine(0, zeroLineY, mWidth, zeroLineY, mZeroLinePaint);
     }
 
@@ -252,9 +258,13 @@ public class RulerScaleView extends View {
             if (isTypeTop) {
                 startY = 0;
                 stopY = isLongScale ? mLongScaleLineHeight : mShortScaleLineHeight;
+                startY += mZeroLienWidth;
+                stopY += mZeroLienWidth;
             } else {
                 startY = isLongScale ? mHeight - mLongScaleLineHeight : mHeight - mShortScaleLineHeight;
                 stopY = mHeight;
+                startY -= mZeroLienWidth;
+                stopY -= mZeroLienWidth;
             }
             paint = isLongScale ? mLongScaleLinePaint : mShortScaleLinePaint;
             canvas.drawLine(currentX, startY, currentX, stopY, paint);
@@ -323,5 +333,77 @@ public class RulerScaleView extends View {
             result = size;
         }
         return result;
+    }
+
+    public void setMinValue(float minValue) {
+        mMinValue = minValue;
+    }
+
+    public void setMaxValue(float maxValue) {
+        mMaxValue = maxValue;
+    }
+
+    public void setGridGapNumber(int gridGapNumber) {
+        mGridGapNumber = gridGapNumber;
+    }
+
+    public void setGridGapValue(float gridGapValue) {
+        mGridGapValue = gridGapValue;
+    }
+
+    public void setGridOffset(int gridOffset) {
+        mGridOffset = gridOffset;
+    }
+
+    public void setLongScaleLineWidth(int longScaleLineWidth) {
+        mLongScaleLineWidth = longScaleLineWidth;
+    }
+
+    public void setLongScaleLineHeight(int longScaleLineHeight) {
+        mLongScaleLineHeight = longScaleLineHeight;
+    }
+
+    public void setLongScaleLineColor(int longScaleLineColor) {
+        mLongScaleLineColor = longScaleLineColor;
+    }
+
+    public void setShortScaleLineWidth(int shortScaleLineWidth) {
+        mShortScaleLineWidth = shortScaleLineWidth;
+    }
+
+    public void setShortScaleLineHeight(int shortScaleLineHeight) {
+        mShortScaleLineHeight = shortScaleLineHeight;
+    }
+
+    public void setShortScaleLineColor(int shortScaleLineColor) {
+        mShortScaleLineColor = shortScaleLineColor;
+    }
+
+    public void setZeroLienWidth(int zeroLienWidth) {
+        mZeroLienWidth = zeroLienWidth;
+    }
+
+    public void setZeroLineColor(int zeroLineColor) {
+        mZeroLineColor = zeroLineColor;
+    }
+
+    public void setRulerScaleBackgroundColor(int rulerScaleBackgroundColor) {
+        mRulerScaleBackgroundColor = rulerScaleBackgroundColor;
+    }
+
+    public void setGapDistance(float gapDistance) {
+        mGapDistance = gapDistance;
+    }
+
+    public void setScaleTextSize(float scaleTextSize) {
+        mScaleTextSize = scaleTextSize;
+    }
+
+    public void setScaleTextColor(int scaleTextColor) {
+        mScaleTextColor = scaleTextColor;
+    }
+
+    public void setTextMargin(float textMargin) {
+        mTextMargin = textMargin;
     }
 }

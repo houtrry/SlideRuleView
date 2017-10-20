@@ -1,10 +1,12 @@
 package com.houtrry.slideruleview;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,12 +63,32 @@ public class SlideRuleView extends ViewGroup {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mRulerScaleView = (RulerScaleView) getChildAt(0);
-        mTickMarkView = getChildAt(1);
+//        mRulerScaleView = (RulerScaleView) getChildAt(0);
+//        mTickMarkView = getChildAt(1);
     }
 
     private void init(Context context, AttributeSet attrs) {
+        initViewDragHelper(context);
+        initChildView(context);
+        initAttrs(context, attrs);
+    }
+
+    private void initViewDragHelper(Context context) {
         mViewDragHelper = ViewDragHelper.create(this, mViewDragHelperCallback);
+
+    }
+
+    private void initAttrs(Context context, AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SlideRuleView);
+
+
+        typedArray.recycle();
+    }
+
+    private void initChildView(Context context) {
+        View rootView = LayoutInflater.from(context).inflate(R.layout.layout_rulescale, this, true);
+        mRulerScaleView = rootView.findViewById(R.id.rulerScaleView);
+        mTickMarkView = rootView.findViewById(R.id.tickMarkView);
     }
 
     @Override
