@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -77,5 +78,32 @@ public class TickMarkView extends View {
         super.onDraw(canvas);
         canvas.drawColor(Color.TRANSPARENT);
         canvas.drawLine(mWidth * 0.5f, 0, mWidth * 0.5f, mTickMarkHeight + mTickMarkWidth * 0.5f, mTickMarkPaint);
+    }
+
+    /**
+     * 标记线的颜色
+     * @param tickMarkColor
+     */
+    public void setTickMarkColor(int tickMarkColor) {
+        mTickMarkColor = tickMarkColor;
+        ViewCompat.postInvalidateOnAnimation(this);
+    }
+
+    /**
+     * 标记线的宽度
+     * @param tickMarkWidth
+     */
+    public void setTickMarkWidth(float tickMarkWidth) {
+        mTickMarkWidth = tickMarkWidth;
+        ViewCompat.postInvalidateOnAnimation(this);
+    }
+
+    /**
+     * 标记线的高度
+     * @param tickMarkHeight
+     */
+    public void setTickMarkHeight(float tickMarkHeight) {
+        mTickMarkHeight = tickMarkHeight;
+        ViewCompat.postInvalidateOnAnimation(this);
     }
 }

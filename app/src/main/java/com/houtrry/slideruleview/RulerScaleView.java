@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -233,7 +234,7 @@ public class RulerScaleView extends View {
      * @param canvas
      */
     private void drawZeroLine(Canvas canvas) {
-        final float zeroLineY = mScaleLineType == TYPE_TOP ? mZeroLienWidth*0.5f : mHeight-mZeroLienWidth*0.5f;
+        final float zeroLineY = mScaleLineType == TYPE_TOP ? mZeroLienWidth * 0.5f : mHeight - mZeroLienWidth * 0.5f;
         canvas.drawLine(0, zeroLineY, mWidth, zeroLineY, mZeroLinePaint);
     }
 
@@ -335,75 +336,179 @@ public class RulerScaleView extends View {
         return result;
     }
 
+    /**
+     * 卷尺显示的最小值
+     *
+     * @param minValue
+     */
     public void setMinValue(float minValue) {
         mMinValue = minValue;
+        ViewCompat.postInvalidateOnAnimation(this);
     }
 
+    /**
+     * 卷尺显示的最大值
+     *
+     * @param maxValue
+     */
     public void setMaxValue(float maxValue) {
         mMaxValue = maxValue;
+        ViewCompat.postInvalidateOnAnimation(this);
     }
 
+    /**
+     * 1大格包含多少小格
+     *
+     * @param gridGapNumber
+     */
     public void setGridGapNumber(int gridGapNumber) {
         mGridGapNumber = gridGapNumber;
+        ViewCompat.postInvalidateOnAnimation(this);
     }
 
+    /**
+     * 每一小格的单位是多少(每一小格的值是多少)
+     *
+     * @param gridGapValue
+     */
     public void setGridGapValue(float gridGapValue) {
         mGridGapValue = gridGapValue;
+        ViewCompat.postInvalidateOnAnimation(this);
     }
 
+    /**
+     * 第一个大格的位置
+     * 第一个大格出现在第几个小格的位置(有可能会有最小值不是大格的情况)
+     *
+     * @param gridOffset
+     */
     public void setGridOffset(int gridOffset) {
         mGridOffset = gridOffset;
+        ViewCompat.postInvalidateOnAnimation(this);
     }
 
+    /**
+     * 长刻度线的宽度
+     *
+     * @param longScaleLineWidth
+     */
     public void setLongScaleLineWidth(int longScaleLineWidth) {
         mLongScaleLineWidth = longScaleLineWidth;
+        ViewCompat.postInvalidateOnAnimation(this);
     }
 
+    /**
+     * 长刻度线的高度
+     *
+     * @param longScaleLineHeight
+     */
     public void setLongScaleLineHeight(int longScaleLineHeight) {
         mLongScaleLineHeight = longScaleLineHeight;
+        ViewCompat.postInvalidateOnAnimation(this);
     }
 
+    /**
+     * 长刻度线的颜色
+     *
+     * @param longScaleLineColor
+     */
     public void setLongScaleLineColor(int longScaleLineColor) {
         mLongScaleLineColor = longScaleLineColor;
+        ViewCompat.postInvalidateOnAnimation(this);
     }
 
+    /**
+     * 短刻度线的宽度
+     *
+     * @param shortScaleLineWidth
+     */
     public void setShortScaleLineWidth(int shortScaleLineWidth) {
         mShortScaleLineWidth = shortScaleLineWidth;
+        ViewCompat.postInvalidateOnAnimation(this);
     }
 
+    /**
+     * 短刻度线的高度
+     *
+     * @param shortScaleLineHeight
+     */
     public void setShortScaleLineHeight(int shortScaleLineHeight) {
         mShortScaleLineHeight = shortScaleLineHeight;
+        ViewCompat.postInvalidateOnAnimation(this);
     }
 
+    /**
+     * 短刻度线的颜色
+     *
+     * @param shortScaleLineColor
+     */
     public void setShortScaleLineColor(int shortScaleLineColor) {
         mShortScaleLineColor = shortScaleLineColor;
+        ViewCompat.postInvalidateOnAnimation(this);
     }
 
+    /**
+     * 基线的宽度
+     *
+     * @param zeroLienWidth
+     */
     public void setZeroLienWidth(int zeroLienWidth) {
         mZeroLienWidth = zeroLienWidth;
+        ViewCompat.postInvalidateOnAnimation(this);
     }
 
+    /**
+     * 基线的颜色
+     *
+     * @param zeroLineColor
+     */
     public void setZeroLineColor(int zeroLineColor) {
         mZeroLineColor = zeroLineColor;
+        ViewCompat.postInvalidateOnAnimation(this);
     }
 
+    /**
+     * 尺子的背景色
+     *
+     * @param rulerScaleBackgroundColor
+     */
     public void setRulerScaleBackgroundColor(int rulerScaleBackgroundColor) {
         mRulerScaleBackgroundColor = rulerScaleBackgroundColor;
+        ViewCompat.postInvalidateOnAnimation(this);
     }
 
+    /**
+     * 每一小格的像素距离
+     *
+     * @param gapDistance
+     */
     public void setGapDistance(float gapDistance) {
         mGapDistance = gapDistance;
+        ViewCompat.postInvalidateOnAnimation(this);
     }
 
+    /**
+     * 文字大小
+     *
+     * @param scaleTextSize
+     */
     public void setScaleTextSize(float scaleTextSize) {
         mScaleTextSize = scaleTextSize;
+        ViewCompat.postInvalidateOnAnimation(this);
     }
 
     public void setScaleTextColor(int scaleTextColor) {
         mScaleTextColor = scaleTextColor;
+        ViewCompat.postInvalidateOnAnimation(this);
     }
 
-    public void setTextMargin(float textMargin) {
+    /**
+     * 文字颜色
+     *
+     * @param textMargin
+     */
+    public void setTextMagin(float textMargin) {
         mTextMargin = textMargin;
+        ViewCompat.postInvalidateOnAnimation(this);
     }
 }

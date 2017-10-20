@@ -2,6 +2,7 @@ package com.houtrry.slideruleview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
@@ -80,6 +81,8 @@ public class SlideRuleView extends ViewGroup {
 
     private void initAttrs(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SlideRuleView);
+
+        int tick_color = typedArray.getColor(R.styleable.SlideRuleView_tick_color, Color.RED);
 
 
         typedArray.recycle();
