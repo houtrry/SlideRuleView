@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -58,12 +59,14 @@ public class TickMarkView extends View {
         mTickMarkPaint.setStrokeWidth(mTickMarkWidth);
         mTickMarkPaint.setStrokeCap(Paint.Cap.ROUND);
         mTickMarkPaint.setStyle(Paint.Style.STROKE);
+
+        Log.d(TAG, "initPaint: mTickMarkColor: "+mTickMarkColor+", mTickMarkWidth: "+mTickMarkWidth);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension((int) mTickMarkWidth, (int) mTickMarkHeight);
+        setMeasuredDimension((int) mTickMarkWidth, (int) (mTickMarkHeight));
     }
 
     @Override
@@ -77,33 +80,42 @@ public class TickMarkView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawColor(Color.TRANSPARENT);
-        canvas.drawLine(mWidth * 0.5f, 0, mWidth * 0.5f, mTickMarkHeight + mTickMarkWidth * 0.5f, mTickMarkPaint);
+        canvas.drawLine(mWidth * 0.5f, 0, mWidth * 0.5f, mTickMarkHeight - mTickMarkWidth*0.5f, mTickMarkPaint);
+        Log.d(TAG, "onDraw: mTickMarkWidth: "+mTickMarkWidth+", color: "+mTickMarkPaint.getColor());
     }
 
     /**
      * 标记线的颜色
      * @param tickMarkColor
      */
-    public void setTickMarkColor(int tickMarkColor) {
+    public TickMarkView setTickMarkColor(int tickMarkColor) {
+        Log.d(TAG, "setTickMarkColor: tickMarkColor: "+tickMarkColor+", mTickMarkColor: "+mTickMarkColor);
         mTickMarkColor = tickMarkColor;
+        mTickMarkPaint.setColor(mTickMarkColor);
         ViewCompat.postInvalidateOnAnimation(this);
+        return this;
     }
 
     /**
      * 标记线的宽度
      * @param tickMarkWidth
      */
-    public void setTickMarkWidth(float tickMarkWidth) {
+    public TickMarkView setTickMarkWidth(float tickMarkWidth) {
+        Log.d(TAG, "setTickMarkWidth: tickMarkWidth: "+tickMarkWidth);
         mTickMarkWidth = tickMarkWidth;
+        mTickMarkPaint.setStrokeWidth(mTickMarkWidth);
         ViewCompat.postInvalidateOnAnimation(this);
+        return this;
     }
 
     /**
      * 标记线的高度
      * @param tickMarkHeight
      */
-    public void setTickMarkHeight(float tickMarkHeight) {
+    public TickMarkView setTickMarkHeight(float tickMarkHeight) {
+        Log.d(TAG, "setTickMarkHeight: tickMarkHeight: "+tickMarkHeight);
         mTickMarkHeight = tickMarkHeight;
         ViewCompat.postInvalidateOnAnimation(this);
+        return this;
     }
 }

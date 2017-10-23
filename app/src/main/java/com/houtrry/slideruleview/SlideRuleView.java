@@ -7,6 +7,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -85,16 +86,88 @@ public class SlideRuleView extends ViewGroup {
         int tick_color = typedArray.getColor(R.styleable.SlideRuleView_tick_color, Color.RED);
         float tick_width = typedArray.getDimension(R.styleable.SlideRuleView_tick_width, 10);
         float tick_height = typedArray.getDimension(R.styleable.SlideRuleView_tick_height, 50);
-        mTickMarkView.setTickMarkColor(tick_color);
-        mTickMarkView.setTickMarkWidth(tick_width);
-        mTickMarkView.setTickMarkHeight(tick_height);
+
+        TypedValue minValueTypedValue = typedArray.peekValue(R.styleable.SlideRuleView_min_value);
+        float minValue;
+        if (minValueTypedValue.type == TypedValue.TYPE_FLOAT) {
+            minValue = minValueTypedValue.getFloat();
+        } else {
+            minValue = minValueTypedValue.data;
+        }
+        float maxValue;
+        TypedValue maxValueTypedValue = typedArray.peekValue(R.styleable.SlideRuleView_max_value);
+        if (maxValueTypedValue.type == TypedValue.TYPE_FLOAT) {
+            maxValue = maxValueTypedValue.getFloat();
+        } else {
+            maxValue = maxValueTypedValue.data;
+        }
 
 
+        int valueDecimal = typedArray.getInteger(R.styleable.SlideRuleView_value_decimal, 1);
+        int gridGapNumber = typedArray.getInteger(R.styleable.SlideRuleView_grid_gap_number, 5);
+
+        int gridOffset = typedArray.getInteger(R.styleable.SlideRuleView_grid_offset, 0);
+
+        int longScaleLineColor = typedArray.getColor(R.styleable.SlideRuleView_long_scale_line_color, Color.BLACK);
+
+        int longScaleLineWidth = typedArray.getDimensionPixelSize(R.styleable.SlideRuleView_long_scale_line_width, 10);
+
+        int longScaleLineHeight = typedArray.getDimensionPixelSize(R.styleable.SlideRuleView_long_scale_line_height, 50);
+
+        int shortScaleLineColor = typedArray.getColor(R.styleable.SlideRuleView_short_scale_line_color, Color.BLACK);
+
+        int shortScaleLineWidth = typedArray.getDimensionPixelSize(R.styleable.SlideRuleView_short_scale_line_width, 6);
+
+        int shortScaleLineHeight = typedArray.getDimensionPixelSize(R.styleable.SlideRuleView_short_scale_line_height, 30);
+
+        int zeroLineColor = typedArray.getColor(R.styleable.SlideRuleView_zero_line_color, Color.BLACK);
+
+        int zeroLineWidth = typedArray.getDimensionPixelSize(R.styleable.SlideRuleView_zero_line_width, 6);
+
+        int rulerScaleBackgroundColor = typedArray.getColor(R.styleable.SlideRuleView_ruler_scale_background_color, Color.WHITE);
+
+        int gapDistance = typedArray.getDimensionPixelSize(R.styleable.SlideRuleView_gap_distance, 6);
+
+        int scaleTextSize = typedArray.getDimensionPixelSize(R.styleable.SlideRuleView_scale_text_size, 30);
+
+        int scaleTextColor = typedArray.getColor(R.styleable.SlideRuleView_scale_text_color, Color.BLACK);
+
+        int scaleTextMargin = typedArray.getDimensionPixelSize(R.styleable.SlideRuleView_scale_text_margin, 45);
 
 
+        mTickMarkView.setTickMarkColor(tick_color)
+                .setTickMarkWidth(tick_width)
+                .setTickMarkHeight(tick_height);
 
+        Log.d(TAG, "initAttrs: TickMarkView, tick_color: "+tick_color+", tick_width: "+tick_width+", tick_height: "+tick_height);
+
+        mRulerScaleView.setMinValue(minValue)
+                .setMaxValue(maxValue)
+                .setValueDecimal(valueDecimal)
+                .setGridGapNumber(gridGapNumber)
+                .setGridOffset(gridOffset)
+                .setLongScaleLineColor(longScaleLineColor)
+                .setLongScaleLineWidth(longScaleLineWidth)
+                .setLongScaleLineHeight(longScaleLineHeight)
+                .setShortScaleLineColor(shortScaleLineColor)
+                .setShortScaleLineWidth(shortScaleLineWidth)
+                .setShortScaleLineHeight(shortScaleLineHeight)
+                .setZeroLineColor(zeroLineColor)
+                .setZeroLienWidth(zeroLineWidth)
+                .setRulerScaleBackgroundColor(rulerScaleBackgroundColor)
+                .setGapDistance(gapDistance)
+                .setScaleTextSize(scaleTextSize)
+                .setScaleTextColor(scaleTextColor)
+                .setScaleTextMargin(scaleTextMargin);
+
+        Log.d(TAG, "initAttrs: RulerScaleView, minValue: "+minValue+", maxValue: "+maxValue+", valueDecimal: "+valueDecimal+", gridGapNumber: "+gridGapNumber+", gridOffset: " +gridOffset);
+        Log.d(TAG, "initAttrs: RulerScaleView, longScaleLineColor: "+longScaleLineColor+", longScaleLineWidth: "+longScaleLineWidth+", longScaleLineHeight: "+longScaleLineHeight);
+        Log.d(TAG, "initAttrs: RulerScaleView, shortScaleLineColor: "+shortScaleLineColor+", shortScaleLineWidth: "+shortScaleLineWidth+", shortScaleLineHeight: "+shortScaleLineHeight);
+        Log.d(TAG, "initAttrs: RulerScaleView, zeroLineColor: "+zeroLineColor+", zeroLineWidth: "+zeroLineWidth+", rulerScaleBackgroundColor: "+rulerScaleBackgroundColor);
+        Log.d(TAG, "initAttrs: RulerScaleView, gapDistance: "+gapDistance+", scaleTextSize: "+scaleTextSize+", scaleTextColor: "+scaleTextColor);
 
         typedArray.recycle();
+
     }
 
     private void initChildView(Context context) {
@@ -189,5 +262,15 @@ public class SlideRuleView extends ViewGroup {
 
     public void setSlideRuleListener(SlideRuleListener slideRuleListener) {
         mSlideRuleListener = slideRuleListener;
+        if (mSlideRuleListener != null && mRulerScaleView != null) {
+            mSlideRuleListener.slideRule(mRulerScaleView.getCurrentValue());
+        }
+    }
+
+    public void setSlideValue(float value) {
+        float slideValue = mRulerScaleView.setSlideValue(value);
+        if (mSlideRuleListener != null) {
+            mSlideRuleListener.slideRule(slideValue);
+        }
     }
 }

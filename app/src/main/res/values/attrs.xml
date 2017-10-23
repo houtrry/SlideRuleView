@@ -15,17 +15,19 @@
         <attr name="min_value" format="integer|float"/>
         <!--卷尺显示的最大值-->
         <attr name="max_value" format="integer|float"/>
+        <!--默认显示的值是多少 暂不支持, 默认显示最小值-->
+        <attr name="default_value" format="integer|float"/>
+        <!--结果值保留多少位小数-->
+        <attr name="value_decimal" format="integer"/>
 
         <!--1大格包含多少小格-->
         <attr name="grid_gap_number" format="integer"/>
-        <!--每一小格的单位是多少-->
-        <attr name="grid_gap_value" format="integer|float"/>
 
         <!--第一个大格的位置 第一个大格出现在第几个小格的位置(有可能会有最小值不是大格的情况)-->
         <attr name="grid_offset" format="integer"/>
 
         <!--长刻度线的颜色-->
-        <attr name="long_scale_line_color" format="color"/>
+        <attr name="long_scale_line_color" format="color|reference"/>
         <!--长刻度线的宽度-->
         <attr name="long_scale_line_width" format="dimension"/>
         <!--长刻度线的高度-->
@@ -54,6 +56,8 @@
         <attr name="scale_text_size" format="dimension"/>
         <!--文字颜色-->
         <attr name="scale_text_color" format="color"/>
+        <!--文字距另一边的距离-->
+        <attr name="scale_text_margin" format="dimension"/>
 
 
         <!-- ~~~~~~~~~~~~~~可滑动部分 RulerScaleView  end ~~~~~~~~~~~~~~ -->

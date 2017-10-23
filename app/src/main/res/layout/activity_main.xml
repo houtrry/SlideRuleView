@@ -2,9 +2,11 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:slideRule="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:orientation="vertical"
     tools:context="com.houtrry.slideruleview.MainActivity">
 
@@ -18,8 +20,8 @@
     <com.houtrry.slideruleview.RulerScaleView
         android:id="@+id/rulerScaleView"
         android:layout_width="match_parent"
-        android:layout_gravity="center_horizontal"
         android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         />
 
@@ -27,33 +29,61 @@
         android:id="@+id/slideRuleView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
 
-        <com.houtrry.slideruleview.RulerScaleView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+        slideRule:gap_distance="7dp"
+        slideRule:grid_gap_number="10"
+        slideRule:grid_offset="0"
 
-        <com.houtrry.slideruleview.TickMarkView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            />
+        slideRule:long_scale_line_color="@color/long_scale_line_color"
+        slideRule:long_scale_line_height="14dp"
+        slideRule:long_scale_line_width="2dp"
 
-    </com.houtrry.slideruleview.SlideRuleView>
+        slideRule:max_value="80"
+        slideRule:min_value="30"
+
+        slideRule:ruler_scale_background_color="@color/ruler_scale_background_color"
+        slideRule:scale_text_color="@color/colorPrimaryDark"
+        slideRule:scale_text_margin="15dp"
+
+        slideRule:scale_text_size="15sp"
+        slideRule:short_scale_line_color="@color/short_scale_line_color"
+        slideRule:short_scale_line_height="7dp"
+
+        slideRule:short_scale_line_width="1dp"
+        slideRule:tick_color="@color/tick_color"
+
+        slideRule:tick_height="16dp"
+
+        slideRule:tick_width="3dp"
+
+        slideRule:value_decimal="1"
+        slideRule:zero_line_color="@color/zero_line_color"
+
+        slideRule:zero_line_width="2dp"
+        />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:textColor="@color/colorAccent"
-        tools:text="ha"
-        android:textAllCaps="false"
-        android:textSize="16sp"
-        android:includeFontPadding="false"
         android:layout_marginTop="20dp"
+        android:includeFontPadding="false"
+        android:textAllCaps="false"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        tools:text="ha"/>
 
+
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="changeValue"
+        android:textAllCaps="false"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"/>
 </LinearLayout>

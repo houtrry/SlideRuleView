@@ -35,7 +35,7 @@ public class RulerScaleView extends View {
     /**
      * 每一小格的单位是0.1
      */
-    private float mGridGapValue = 0.1f;
+    private float mGridGapValue = 1.0f/mGridGapNumber;
 
     /**
      * 第一个大格的位置
@@ -123,8 +123,15 @@ public class RulerScaleView extends View {
      */
     private int mScaleTextColor = Color.parseColor("#ff222222");
     private Paint mScaleTextPaint;
-    private float mTextMargin = 50;
+    /**
+     * 文字距另一边的距离
+     */
+    private int mScaleTextMargin = 50;
 
+    /**
+     * 结果的返回值取一位小数
+     */
+    private int mValueDecimal = 2;
 
     public RulerScaleView(Context context) {
         this(context, null);
@@ -140,10 +147,10 @@ public class RulerScaleView extends View {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        initPaint(context);
+        initPaint();
     }
 
-    private void initPaint(Context context) {
+    private void initPaint() {
         mLongScaleLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mLongScaleLinePaint.setColor(mLongScaleLineColor);
         mLongScaleLinePaint.setStrokeCap(Paint.Cap.ROUND);
@@ -202,7 +209,9 @@ public class RulerScaleView extends View {
         Log.d(TAG, "calculateCurrentValue: left: " + left + ", (Math.abs(left): " + (Math.abs(left)));
         int position = (int) ((Math.abs(left)) / mGapDistance);
         float currentValue = mMinValue + position * mGridGapValue;
-        return AndroidTools.roundKeepADecimal(currentValue);
+        float result = AndroidTools.roundKeepDecimal(currentValue, mValueDecimal);
+        mCurrentValue = result;
+        return result;
     }
 
     /**
@@ -212,10 +221,8 @@ public class RulerScaleView extends View {
      * @return
      */
     public int calculateLatestTick(int currentDragLeft) {
-        int finalLeft = 0;
         int position = Math.round((Math.abs(currentDragLeft)) / mGapDistance);
-        finalLeft = (int) (position * mGapDistance + 0.5);
-        Log.d(TAG, "calculateLatestTick: currentDragLeft: " + currentDragLeft + ", position: " + position + ", finalLeft: " + finalLeft);
+        int finalLeft = (int) (position * mGapDistance + 0.5);
         return finalLeft * (currentDragLeft < 0 ? -1 : 1);
     }
 
@@ -276,9 +283,9 @@ public class RulerScaleView extends View {
 
             mScaleTextPaint.getTextBounds(textStr, 0, textStr.length(), rectText);
             if (isTypeTop) {
-                textBottom = mHeight - mTextMargin;
+                textBottom = mHeight - mScaleTextMargin;
             } else {
-                textBottom = mTextMargin + rectText.height();
+                textBottom = mScaleTextMargin + rectText.height();
             }
             if (isLongScale) {
                 canvas.drawText(textStr, textLeft, textBottom, mScaleTextPaint);
@@ -292,7 +299,7 @@ public class RulerScaleView extends View {
 
     private void calculateGap() {
         mTotalGrid = (int) Math.ceil((mMaxValue - mMinValue) / mGridGapValue);
-        Log.d(TAG, "calculateGap: mTotalGrid: " + mTotalGrid + ", mGapDistance: " + mGapDistance);
+        Log.d(TAG, "calculateGap: mTotalGrid: " + mTotalGrid);
     }
 
     private int mOriginalWidth = 0;
@@ -307,7 +314,7 @@ public class RulerScaleView extends View {
         int result;
         int mode = MeasureSpec.getMode(widthMeasureSpec);
         int size = MeasureSpec.getSize(widthMeasureSpec);
-        Log.d(TAG, "measureWidth: originWidth: size: " + size);
+        Log.d(TAG, "measureWidth: originWidth: size: " + size+", mTotalGrid: "+mTotalGrid+", mGapDistance: "+mGapDistance);
         if (mode == MeasureSpec.EXACTLY) {
             result = (int) (size + mTotalGrid * mGapDistance);
         } else {
@@ -341,9 +348,11 @@ public class RulerScaleView extends View {
      *
      * @param minValue
      */
-    public void setMinValue(float minValue) {
+    public RulerScaleView setMinValue(float minValue) {
+        Log.d(TAG, "setMinValue: minValue: "+minValue);
         mMinValue = minValue;
         ViewCompat.postInvalidateOnAnimation(this);
+        return this;
     }
 
     /**
@@ -351,9 +360,11 @@ public class RulerScaleView extends View {
      *
      * @param maxValue
      */
-    public void setMaxValue(float maxValue) {
+    public RulerScaleView setMaxValue(float maxValue) {
+        Log.d(TAG, "setMaxValue: maxValue: "+maxValue);
         mMaxValue = maxValue;
         ViewCompat.postInvalidateOnAnimation(this);
+        return this;
     }
 
     /**
@@ -361,19 +372,12 @@ public class RulerScaleView extends View {
      *
      * @param gridGapNumber
      */
-    public void setGridGapNumber(int gridGapNumber) {
+    public RulerScaleView setGridGapNumber(int gridGapNumber) {
+        Log.d(TAG, "setGridGapNumber: gridGapNumber: "+gridGapNumber);
         mGridGapNumber = gridGapNumber;
+        mGridGapValue = 1.0f/mGridGapNumber;
         ViewCompat.postInvalidateOnAnimation(this);
-    }
-
-    /**
-     * 每一小格的单位是多少(每一小格的值是多少)
-     *
-     * @param gridGapValue
-     */
-    public void setGridGapValue(float gridGapValue) {
-        mGridGapValue = gridGapValue;
-        ViewCompat.postInvalidateOnAnimation(this);
+        return this;
     }
 
     /**
@@ -382,9 +386,11 @@ public class RulerScaleView extends View {
      *
      * @param gridOffset
      */
-    public void setGridOffset(int gridOffset) {
+    public RulerScaleView setGridOffset(int gridOffset) {
+        Log.d(TAG, "setGridOffset: gridOffset: "+gridOffset);
         mGridOffset = gridOffset;
         ViewCompat.postInvalidateOnAnimation(this);
+        return this;
     }
 
     /**
@@ -392,9 +398,12 @@ public class RulerScaleView extends View {
      *
      * @param longScaleLineWidth
      */
-    public void setLongScaleLineWidth(int longScaleLineWidth) {
+    public RulerScaleView setLongScaleLineWidth(int longScaleLineWidth) {
+        Log.d(TAG, "setLongScaleLineWidth: longScaleLineWidth: "+longScaleLineWidth);
         mLongScaleLineWidth = longScaleLineWidth;
+        mLongScaleLinePaint.setStrokeWidth(mLongScaleLineWidth);
         ViewCompat.postInvalidateOnAnimation(this);
+        return this;
     }
 
     /**
@@ -402,9 +411,11 @@ public class RulerScaleView extends View {
      *
      * @param longScaleLineHeight
      */
-    public void setLongScaleLineHeight(int longScaleLineHeight) {
+    public RulerScaleView setLongScaleLineHeight(int longScaleLineHeight) {
+        Log.d(TAG, "setLongScaleLineHeight: longScaleLineHeight: "+longScaleLineHeight);
         mLongScaleLineHeight = longScaleLineHeight;
         ViewCompat.postInvalidateOnAnimation(this);
+        return this;
     }
 
     /**
@@ -412,9 +423,12 @@ public class RulerScaleView extends View {
      *
      * @param longScaleLineColor
      */
-    public void setLongScaleLineColor(int longScaleLineColor) {
+    public RulerScaleView setLongScaleLineColor(int longScaleLineColor) {
+        Log.d(TAG, "setLongScaleLineColor: longScaleLineColor: "+longScaleLineColor);
         mLongScaleLineColor = longScaleLineColor;
+        mLongScaleLinePaint.setColor(mLongScaleLineColor);
         ViewCompat.postInvalidateOnAnimation(this);
+        return this;
     }
 
     /**
@@ -422,9 +436,12 @@ public class RulerScaleView extends View {
      *
      * @param shortScaleLineWidth
      */
-    public void setShortScaleLineWidth(int shortScaleLineWidth) {
+    public RulerScaleView setShortScaleLineWidth(int shortScaleLineWidth) {
+        Log.d(TAG, "setShortScaleLineWidth: shortScaleLineWidth: "+shortScaleLineWidth);
         mShortScaleLineWidth = shortScaleLineWidth;
+        mShortScaleLinePaint.setStrokeWidth(mShortScaleLineWidth);
         ViewCompat.postInvalidateOnAnimation(this);
+        return this;
     }
 
     /**
@@ -432,9 +449,11 @@ public class RulerScaleView extends View {
      *
      * @param shortScaleLineHeight
      */
-    public void setShortScaleLineHeight(int shortScaleLineHeight) {
+    public RulerScaleView setShortScaleLineHeight(int shortScaleLineHeight) {
+        Log.d(TAG, "setShortScaleLineHeight: shortScaleLineHeight: "+shortScaleLineHeight);
         mShortScaleLineHeight = shortScaleLineHeight;
         ViewCompat.postInvalidateOnAnimation(this);
+        return this;
     }
 
     /**
@@ -442,9 +461,12 @@ public class RulerScaleView extends View {
      *
      * @param shortScaleLineColor
      */
-    public void setShortScaleLineColor(int shortScaleLineColor) {
+    public RulerScaleView setShortScaleLineColor(int shortScaleLineColor) {
+        Log.d(TAG, "setShortScaleLineColor: shortScaleLineColor: "+shortScaleLineColor);
         mShortScaleLineColor = shortScaleLineColor;
+        mShortScaleLinePaint.setColor(mShortScaleLineColor);
         ViewCompat.postInvalidateOnAnimation(this);
+        return this;
     }
 
     /**
@@ -452,9 +474,11 @@ public class RulerScaleView extends View {
      *
      * @param zeroLienWidth
      */
-    public void setZeroLienWidth(int zeroLienWidth) {
+    public RulerScaleView setZeroLienWidth(int zeroLienWidth) {
         mZeroLienWidth = zeroLienWidth;
+        mZeroLinePaint.setStrokeWidth(mZeroLienWidth);
         ViewCompat.postInvalidateOnAnimation(this);
+        return this;
     }
 
     /**
@@ -462,9 +486,11 @@ public class RulerScaleView extends View {
      *
      * @param zeroLineColor
      */
-    public void setZeroLineColor(int zeroLineColor) {
+    public RulerScaleView setZeroLineColor(int zeroLineColor) {
         mZeroLineColor = zeroLineColor;
+        mZeroLinePaint.setColor(mZeroLineColor);
         ViewCompat.postInvalidateOnAnimation(this);
+        return this;
     }
 
     /**
@@ -472,9 +498,10 @@ public class RulerScaleView extends View {
      *
      * @param rulerScaleBackgroundColor
      */
-    public void setRulerScaleBackgroundColor(int rulerScaleBackgroundColor) {
+    public RulerScaleView setRulerScaleBackgroundColor(int rulerScaleBackgroundColor) {
         mRulerScaleBackgroundColor = rulerScaleBackgroundColor;
         ViewCompat.postInvalidateOnAnimation(this);
+        return this;
     }
 
     /**
@@ -482,9 +509,10 @@ public class RulerScaleView extends View {
      *
      * @param gapDistance
      */
-    public void setGapDistance(float gapDistance) {
+    public RulerScaleView setGapDistance(float gapDistance) {
         mGapDistance = gapDistance;
         ViewCompat.postInvalidateOnAnimation(this);
+        return this;
     }
 
     /**
@@ -492,14 +520,18 @@ public class RulerScaleView extends View {
      *
      * @param scaleTextSize
      */
-    public void setScaleTextSize(float scaleTextSize) {
+    public RulerScaleView setScaleTextSize(float scaleTextSize) {
         mScaleTextSize = scaleTextSize;
+        mScaleTextPaint.setTextSize(mScaleTextSize);
         ViewCompat.postInvalidateOnAnimation(this);
+        return this;
     }
 
-    public void setScaleTextColor(int scaleTextColor) {
+    public RulerScaleView setScaleTextColor(int scaleTextColor) {
         mScaleTextColor = scaleTextColor;
+        mScaleTextPaint.setColor(mScaleTextColor);
         ViewCompat.postInvalidateOnAnimation(this);
+        return this;
     }
 
     /**
@@ -507,8 +539,35 @@ public class RulerScaleView extends View {
      *
      * @param textMargin
      */
-    public void setTextMagin(float textMargin) {
-        mTextMargin = textMargin;
+    public RulerScaleView setScaleTextMargin(int textMargin) {
+        mScaleTextMargin = textMargin;
         ViewCompat.postInvalidateOnAnimation(this);
+        return this;
+    }
+
+    /**
+     * 返回值取指定位数的小数
+     *
+     * @param valueDecimal 结果值的小数位数
+     */
+    public RulerScaleView setValueDecimal(int valueDecimal) {
+        mValueDecimal = valueDecimal;
+        return this;
+    }
+
+    private float mCurrentValue = mMinValue;
+    public float setSlideValue(float slideValue) {
+        if (slideValue < mMinValue || slideValue > mMaxValue) {
+            throw new IllegalArgumentException("the value must between "+mMinValue +" and "+mMaxValue);
+        }
+        final float result = AndroidTools.roundKeepDecimal(slideValue, mValueDecimal);
+        mCurrentValue = result;
+        final int offset =  - (int) ((result - mMinValue) / mGridGapValue * mGapDistance + 0.5f) - getLeft();
+        offsetLeftAndRight(offset);
+        return result;
+    }
+
+    public float getCurrentValue() {
+        return mCurrentValue;
     }
 }
