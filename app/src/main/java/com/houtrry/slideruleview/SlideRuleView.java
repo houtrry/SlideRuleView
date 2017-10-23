@@ -83,9 +83,9 @@ public class SlideRuleView extends ViewGroup {
     private void initAttrs(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SlideRuleView);
 
-        int tick_color = typedArray.getColor(R.styleable.SlideRuleView_tick_color, Color.RED);
-        float tick_width = typedArray.getDimension(R.styleable.SlideRuleView_tick_width, 10);
-        float tick_height = typedArray.getDimension(R.styleable.SlideRuleView_tick_height, 50);
+        int tickColor = typedArray.getColor(R.styleable.SlideRuleView_tick_line_color, Color.RED);
+        float tickWidth = typedArray.getDimension(R.styleable.SlideRuleView_tick_line_width, 10);
+        float tickHeight = typedArray.getDimension(R.styleable.SlideRuleView_tick_line_height, 50);
 
         TypedValue minValueTypedValue = typedArray.peekValue(R.styleable.SlideRuleView_min_value);
         float minValue;
@@ -105,6 +105,14 @@ public class SlideRuleView extends ViewGroup {
 
         int valueDecimal = typedArray.getInteger(R.styleable.SlideRuleView_value_decimal, 1);
         int gridGapNumber = typedArray.getInteger(R.styleable.SlideRuleView_grid_gap_number, 5);
+
+        float gapValue;
+        TypedValue gapValueTypedValue = typedArray.peekValue(R.styleable.SlideRuleView_grid_gap_value);
+        if (gapValueTypedValue.type == TypedValue.TYPE_FLOAT) {
+            gapValue = gapValueTypedValue.getFloat();
+        } else {
+            gapValue = gapValueTypedValue.data;
+        }
 
         int gridOffset = typedArray.getInteger(R.styleable.SlideRuleView_grid_offset, 0);
 
@@ -135,16 +143,17 @@ public class SlideRuleView extends ViewGroup {
         int scaleTextMargin = typedArray.getDimensionPixelSize(R.styleable.SlideRuleView_scale_text_margin, 45);
 
 
-        mTickMarkView.setTickMarkColor(tick_color)
-                .setTickMarkWidth(tick_width)
-                .setTickMarkHeight(tick_height);
+        mTickMarkView.setTickMarkColor(tickColor)
+                .setTickMarkWidth(tickWidth)
+                .setTickMarkHeight(tickHeight);
 
-        Log.d(TAG, "initAttrs: TickMarkView, tick_color: "+tick_color+", tick_width: "+tick_width+", tick_height: "+tick_height);
+        Log.d(TAG, "initAttrs: TickMarkView, tickColor: "+tickColor+", tickWidth: "+tickWidth+", tickHeight: "+tickHeight);
 
         mRulerScaleView.setMinValue(minValue)
                 .setMaxValue(maxValue)
                 .setValueDecimal(valueDecimal)
                 .setGridGapNumber(gridGapNumber)
+                .setGridGapValue(gapValue)
                 .setGridOffset(gridOffset)
                 .setLongScaleLineColor(longScaleLineColor)
                 .setLongScaleLineWidth(longScaleLineWidth)
@@ -167,7 +176,6 @@ public class SlideRuleView extends ViewGroup {
         Log.d(TAG, "initAttrs: RulerScaleView, gapDistance: "+gapDistance+", scaleTextSize: "+scaleTextSize+", scaleTextColor: "+scaleTextColor);
 
         typedArray.recycle();
-
     }
 
     private void initChildView(Context context) {

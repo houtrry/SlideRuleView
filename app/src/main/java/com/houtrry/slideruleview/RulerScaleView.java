@@ -35,7 +35,7 @@ public class RulerScaleView extends View {
     /**
      * 每一小格的单位是0.1
      */
-    private float mGridGapValue = 1.0f/mGridGapNumber;
+    private float mGridGapValue = 0.1f;
 
     /**
      * 第一个大格的位置
@@ -375,7 +375,17 @@ public class RulerScaleView extends View {
     public RulerScaleView setGridGapNumber(int gridGapNumber) {
         Log.d(TAG, "setGridGapNumber: gridGapNumber: "+gridGapNumber);
         mGridGapNumber = gridGapNumber;
-        mGridGapValue = 1.0f/mGridGapNumber;
+        ViewCompat.postInvalidateOnAnimation(this);
+        return this;
+    }
+
+    /**
+     * 每一小格对应的值是多少
+     * @param value
+     * @return
+     */
+    public RulerScaleView setGridGapValue(float value) {
+        mGridGapValue = value;
         ViewCompat.postInvalidateOnAnimation(this);
         return this;
     }

@@ -1,89 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:slideRule="http://schemas.android.com/apk/res-auto"
+    xmlns:slidingScale="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    android:orientation="vertical"
     tools:context="com.houtrry.slideruleview.MainActivity">
 
-    <com.houtrry.slideruleview.TickMarkView
-        android:id="@+id/tickMarkView"
-        android:layout_width="5dp"
-        android:layout_height="25dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"/>
-
-    <com.houtrry.slideruleview.RulerScaleView
-        android:id="@+id/rulerScaleView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <com.houtrry.slideruleview.SlideRuleView
-        android:id="@+id/slideRuleView"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="20dp"
+        <com.houtrry.slideruleview.TickMarkView
+            android:id="@+id/tickMarkView"
+            android:layout_width="5dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"/>
 
-        slideRule:gap_distance="7dp"
-        slideRule:grid_gap_number="10"
-        slideRule:grid_offset="0"
+        <com.houtrry.slideruleview.RulerScaleView
+            android:id="@+id/rulerScaleView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            />
 
-        slideRule:long_scale_line_color="@color/long_scale_line_color"
-        slideRule:long_scale_line_height="14dp"
-        slideRule:long_scale_line_width="2dp"
+        <com.houtrry.slideruleview.SlideRuleView
+            android:id="@+id/slideRuleView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp"
 
-        slideRule:max_value="80"
-        slideRule:min_value="30"
+            slideRule:gap_distance="7dp"
+            slideRule:grid_gap_number="10"
+            slideRule:grid_gap_value="0.1"
+            slideRule:grid_offset="0"
 
-        slideRule:ruler_scale_background_color="@color/ruler_scale_background_color"
-        slideRule:scale_text_color="@color/colorPrimaryDark"
-        slideRule:scale_text_margin="15dp"
+            slideRule:long_scale_line_color="@color/long_scale_line_color"
+            slideRule:long_scale_line_height="14dp"
+            slideRule:long_scale_line_width="2dp"
 
-        slideRule:scale_text_size="15sp"
-        slideRule:short_scale_line_color="@color/short_scale_line_color"
-        slideRule:short_scale_line_height="7dp"
+            slideRule:max_value="80"
+            slideRule:min_value="30"
 
-        slideRule:short_scale_line_width="1dp"
-        slideRule:tick_color="@color/tick_color"
+            slideRule:ruler_scale_background_color="@color/ruler_scale_background_color"
+            slideRule:scale_text_color="@color/colorPrimaryDark"
+            slideRule:scale_text_margin="15dp"
 
-        slideRule:tick_height="16dp"
+            slideRule:scale_text_size="15sp"
+            slideRule:short_scale_line_color="@color/short_scale_line_color"
+            slideRule:short_scale_line_height="7dp"
 
-        slideRule:tick_width="3dp"
+            slideRule:short_scale_line_width="1dp"
 
-        slideRule:value_decimal="1"
-        slideRule:zero_line_color="@color/zero_line_color"
+            slideRule:tick_line_color="@color/tick_color"
+            slideRule:tick_line_height="16dp"
+            slideRule:tick_line_width="3dp"
 
-        slideRule:zero_line_width="2dp"
-        />
+            slideRule:value_decimal="1"
+            slideRule:zero_line_color="@color/zero_line_color"
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:includeFontPadding="false"
-        android:textAllCaps="false"
-        android:textColor="@color/colorAccent"
-        android:textSize="16sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:text="ha"/>
+            slideRule:zero_line_width="2dp"
+            />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:includeFontPadding="false"
+            android:textAllCaps="false"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:text="ha"/>
 
 
-    <Button
-        android:id="@+id/btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="changeValue"
-        android:textAllCaps="false"
-        android:textColor="@color/colorAccent"
-        android:textSize="16sp"/>
-</LinearLayout>
+        <Button
+            android:id="@+id/btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="changeValue"
+            android:textAllCaps="false"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"/>
+
+            <com.houtrry.slideruleview.SlidingScaleView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+
+                slidingScale:sliding_gap_distance="7dp"
+                slidingScale:sliding_grid_gap_number="10"
+                slidingScale:sliding_grid_gap_value="0.1"
+                slidingScale:sliding_grid_offset="0"
+
+                slidingScale:sliding_long_scale_line_color="@color/long_scale_line_color"
+                slidingScale:sliding_long_scale_line_height="14dp"
+                slidingScale:sliding_long_scale_line_width="2dp"
+
+                slidingScale:sliding_max_value="80"
+                slidingScale:sliding_min_value="30"
+
+                slidingScale:sliding_ruler_scale_background_color="@color/ruler_scale_background_color"
+                slidingScale:sliding_scale_text_color="@color/colorPrimaryDark"
+                slidingScale:sliding_scale_text_margin="15dp"
+
+                slidingScale:sliding_scale_text_size="15sp"
+                slidingScale:sliding_short_scale_line_color="@color/short_scale_line_color"
+                slidingScale:sliding_short_scale_line_height="7dp"
+
+                slidingScale:sliding_short_scale_line_width="1dp"
+
+                slidingScale:sliding_tick_line_color="@color/tick_color"
+                slidingScale:sliding_tick_line_height="16dp"
+                slidingScale:sliding_tick_line_width="3dp"
+
+                slidingScale:sliding_value_decimal="1"
+                slidingScale:sliding_zero_line_color="@color/zero_line_color"
+
+                slidingScale:sliding_zero_line_width="2dp"
+                />
+    </LinearLayout>
+</ScrollView>

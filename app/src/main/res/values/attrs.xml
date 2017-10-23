@@ -3,11 +3,11 @@
     <declare-styleable name="SlideRuleView">
         <!-- ~~~~~~~~~~~~~~标准线部分 TickMarkView  start ~~~~~~~~~~~~~~ -->
         <!--标准线的颜色-->
-        <attr name="tick_color" format="color"/>
+        <attr name="tick_line_color" format="color"/>
         <!--标准线的宽度-->
-        <attr name="tick_width" format="dimension"/>
+        <attr name="tick_line_width" format="dimension"/>
         <!--标准线的高度-->
-        <attr name="tick_height" format="dimension"/>
+        <attr name="tick_line_height" format="dimension"/>
         <!-- ~~~~~~~~~~~~~~标准线部分  TickMarkView  end ~~~~~~~~~~~~~~ -->
 
         <!-- ~~~~~~~~~~~~~~可滑动部分 RulerScaleView  start ~~~~~~~~~~~~~~ -->
@@ -22,6 +22,9 @@
 
         <!--1大格包含多少小格-->
         <attr name="grid_gap_number" format="integer"/>
+
+        <!--1小格对应的值是多少-->
+        <attr name="grid_gap_value" format="integer|float"/>
 
         <!--第一个大格的位置 第一个大格出现在第几个小格的位置(有可能会有最小值不是大格的情况)-->
         <attr name="grid_offset" format="integer"/>
@@ -58,6 +61,70 @@
         <attr name="scale_text_color" format="color"/>
         <!--文字距另一边的距离-->
         <attr name="scale_text_margin" format="dimension"/>
+
+
+        <!-- ~~~~~~~~~~~~~~可滑动部分 RulerScaleView  end ~~~~~~~~~~~~~~ -->
+    </declare-styleable>
+
+    <declare-styleable name="SlidingScaleView">
+        <!-- ~~~~~~~~~~~~~~标准线部分 TickMarkView  start ~~~~~~~~~~~~~~ -->
+        <!--标准线的颜色-->
+        <attr name="sliding_tick_line_color" format="color"/>
+        <!--标准线的宽度-->
+        <attr name="sliding_tick_line_width" format="dimension"/>
+        <!--标准线的高度-->
+        <attr name="sliding_tick_line_height" format="dimension"/>
+        <!-- ~~~~~~~~~~~~~~标准线部分  TickMarkView  end ~~~~~~~~~~~~~~ -->
+
+        <!-- ~~~~~~~~~~~~~~可滑动部分 RulerScaleView  start ~~~~~~~~~~~~~~ -->
+        <!--卷尺显示的最小值-->
+        <attr name="sliding_min_value" format="integer|float"/>
+        <!--卷尺显示的最大值-->
+        <attr name="sliding_max_value" format="integer|float"/>
+        <!--结果值保留多少位小数-->
+        <attr name="sliding_value_decimal" format="integer"/>
+
+        <!--1大格包含多少小格-->
+        <attr name="sliding_grid_gap_number" format="integer"/>
+
+        <!--1小格对应的值是多少-->
+        <attr name="sliding_grid_gap_value" format="integer|float"/>
+
+        <!--第一个大格的位置 第一个大格出现在第几个小格的位置(有可能会有最小值不是大格的情况)-->
+        <attr name="sliding_grid_offset" format="integer"/>
+
+        <!--长刻度线的颜色-->
+        <attr name="sliding_long_scale_line_color" format="color|reference"/>
+        <!--长刻度线的宽度-->
+        <attr name="sliding_long_scale_line_width" format="dimension"/>
+        <!--长刻度线的高度-->
+        <attr name="sliding_long_scale_line_height" format="dimension"/>
+
+        <!--短刻度线的颜色-->
+        <attr name="sliding_short_scale_line_color" format="color"/>
+        <!--短刻度线的宽度-->
+        <attr name="sliding_short_scale_line_width" format="dimension"/>
+        <!--短刻度线的高度-->
+        <attr name="sliding_short_scale_line_height" format="dimension"/>
+
+
+        <!--基线的颜色-->
+        <attr name="sliding_zero_line_color" format="color"/>
+        <!--基线的宽度-->
+        <attr name="sliding_zero_line_width" format="dimension"/>
+
+        <!--尺子的背景色-->
+        <attr name="sliding_ruler_scale_background_color" format="color"/>
+
+        <!--每一小格的像素距离-->
+        <attr name="sliding_gap_distance" format="dimension"/>
+
+        <!--文字大小-->
+        <attr name="sliding_scale_text_size" format="dimension"/>
+        <!--文字颜色-->
+        <attr name="sliding_scale_text_color" format="color"/>
+        <!--文字距另一边的距离-->
+        <attr name="sliding_scale_text_margin" format="dimension"/>
 
 
         <!-- ~~~~~~~~~~~~~~可滑动部分 RulerScaleView  end ~~~~~~~~~~~~~~ -->
