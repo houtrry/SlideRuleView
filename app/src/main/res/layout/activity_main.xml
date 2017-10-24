@@ -20,6 +20,10 @@
             android:layout_width="5dp"
             android:layout_height="25dp"
             android:layout_gravity="center_horizontal"
+
+            slideRule:tick_line_color="@color/tick_color"
+            slideRule:tick_line_height="16dp"
+            slideRule:tick_line_width="3dp"
             android:layout_marginTop="20dp"/>
 
         <com.houtrry.slideruleview.RulerScaleView
@@ -27,7 +31,35 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
+
             android:layout_marginTop="20dp"
+
+            slideRule:gap_distance="7dp"
+            slideRule:grid_gap_number="10"
+            slideRule:grid_gap_value="0.1"
+            slideRule:grid_offset="0"
+
+            slideRule:long_scale_line_color="@color/long_scale_line_color"
+            slideRule:long_scale_line_height="14dp"
+            slideRule:long_scale_line_width="2dp"
+
+            slideRule:max_value="80"
+            slideRule:min_value="30"
+
+            slideRule:ruler_scale_background_color="@color/ruler_scale_background_color"
+            slideRule:scale_text_color="@color/colorPrimaryDark"
+            slideRule:scale_text_margin="15dp"
+
+            slideRule:scale_text_size="15sp"
+            slideRule:short_scale_line_color="@color/short_scale_line_color"
+            slideRule:short_scale_line_height="7dp"
+
+            slideRule:short_scale_line_width="1dp"
+
+            slideRule:value_decimal="1"
+            slideRule:zero_line_color="@color/zero_line_color"
+
+            slideRule:zero_line_width="2dp"
             />
 
         <com.houtrry.slideruleview.SlideRuleView

@@ -1,6 +1,7 @@
 package com.houtrry.slideruleview;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -8,6 +9,7 @@ import android.graphics.Rect;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 
 /**
@@ -147,7 +149,110 @@ public class RulerScaleView extends View {
     }
 
     private void init(Context context, AttributeSet attrs) {
+        initAttrs(context, attrs);
         initPaint();
+    }
+
+    private void initAttrs(Context context, AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SlideRuleView);
+
+        TypedValue minValueTypedValue = typedArray.peekValue(R.styleable.SlideRuleView_min_value);
+        float minValue;
+        if (minValueTypedValue == null) {
+            minValue = 30;
+        } else if (minValueTypedValue.type == TypedValue.TYPE_FLOAT) {
+            minValue = minValueTypedValue.getFloat();
+        } else {
+            minValue = minValueTypedValue.data;
+        }
+        float maxValue;
+        TypedValue maxValueTypedValue = typedArray.peekValue(R.styleable.SlideRuleView_max_value);
+        if (maxValueTypedValue == null) {
+            maxValue = 70;
+        } else if (maxValueTypedValue.type == TypedValue.TYPE_FLOAT) {
+            maxValue = maxValueTypedValue.getFloat();
+        } else {
+            maxValue = maxValueTypedValue.data;
+        }
+
+
+        int valueDecimal = typedArray.getInteger(R.styleable.SlideRuleView_value_decimal, 1);
+        int gridGapNumber = typedArray.getInteger(R.styleable.SlideRuleView_grid_gap_number, 5);
+
+        float gapValue;
+        TypedValue gapValueTypedValue = typedArray.peekValue(R.styleable.SlideRuleView_grid_gap_value);
+        if (gapValueTypedValue == null) {
+            gapValue = 0.1f;
+        } else if (gapValueTypedValue.type == TypedValue.TYPE_FLOAT) {
+            gapValue = gapValueTypedValue.getFloat();
+        } else {
+            gapValue = gapValueTypedValue.data;
+        }
+
+        int gridOffset = typedArray.getInteger(R.styleable.SlideRuleView_grid_offset, 0);
+
+        int longScaleLineColor = typedArray.getColor(R.styleable.SlideRuleView_long_scale_line_color, Color.BLACK);
+
+        int longScaleLineWidth = typedArray.getDimensionPixelSize(R.styleable.SlideRuleView_long_scale_line_width, 10);
+
+        int longScaleLineHeight = typedArray.getDimensionPixelSize(R.styleable.SlideRuleView_long_scale_line_height, 50);
+
+        int shortScaleLineColor = typedArray.getColor(R.styleable.SlideRuleView_short_scale_line_color, Color.BLACK);
+
+        int shortScaleLineWidth = typedArray.getDimensionPixelSize(R.styleable.SlideRuleView_short_scale_line_width, 6);
+
+        int shortScaleLineHeight = typedArray.getDimensionPixelSize(R.styleable.SlideRuleView_short_scale_line_height, 30);
+
+        int zeroLineColor = typedArray.getColor(R.styleable.SlideRuleView_zero_line_color, Color.BLACK);
+
+        int zeroLineWidth = typedArray.getDimensionPixelSize(R.styleable.SlideRuleView_zero_line_width, 6);
+
+        int rulerScaleBackgroundColor = typedArray.getColor(R.styleable.SlideRuleView_ruler_scale_background_color, Color.WHITE);
+
+        int gapDistance = typedArray.getDimensionPixelSize(R.styleable.SlideRuleView_gap_distance, 6);
+
+        int scaleTextSize = typedArray.getDimensionPixelSize(R.styleable.SlideRuleView_scale_text_size, 30);
+
+        int scaleTextColor = typedArray.getColor(R.styleable.SlideRuleView_scale_text_color, Color.BLACK);
+
+        int scaleTextMargin = typedArray.getDimensionPixelSize(R.styleable.SlideRuleView_scale_text_margin, 45);
+
+
+        Log.d(TAG, "initAttrs: ---------------------------------------------RulerScaleView----start------------------------------------------------");
+        Log.d(TAG, "initAttrs: RulerScaleView, minValue: "+minValue+", maxValue: "+maxValue+", valueDecimal: "+valueDecimal+", gridGapNumber: "+gridGapNumber+", gridOffset: " +gridOffset);
+        Log.d(TAG, "initAttrs: RulerScaleView, longScaleLineColor: "+longScaleLineColor+", longScaleLineWidth: "+longScaleLineWidth+", longScaleLineHeight: "+longScaleLineHeight);
+        Log.d(TAG, "initAttrs: RulerScaleView, shortScaleLineColor: "+shortScaleLineColor+", shortScaleLineWidth: "+shortScaleLineWidth+", shortScaleLineHeight: "+shortScaleLineHeight);
+        Log.d(TAG, "initAttrs: RulerScaleView, zeroLineColor: "+zeroLineColor+", zeroLineWidth: "+zeroLineWidth+", rulerScaleBackgroundColor: "+rulerScaleBackgroundColor);
+        Log.d(TAG, "initAttrs: RulerScaleView, gapDistance: "+gapDistance+", gapValue: "+gapValue+", scaleTextSize: "+scaleTextSize+", scaleTextColor: "+scaleTextColor+", scaleTextMargin: "+scaleTextMargin);
+        Log.d(TAG, "initAttrs: ---------------------------------------------RulerScaleView----end------------------------------------------------");
+
+        typedArray.recycle();
+
+        mMinValue = minValue;
+        mMaxValue = maxValue;
+        mValueDecimal = valueDecimal;
+        mGridGapNumber = gridGapNumber;
+        mGridGapValue = gapValue;
+        mGridOffset = gridOffset;
+
+        mLongScaleLineColor = longScaleLineColor;
+        mLongScaleLineWidth = longScaleLineWidth;
+        mLongScaleLineHeight = longScaleLineHeight;
+
+        mShortScaleLineColor = shortScaleLineColor;
+        mShortScaleLineWidth = shortScaleLineWidth;
+        mShortScaleLineHeight = shortScaleLineHeight;
+
+        mZeroLineColor = zeroLineColor;
+        mZeroLienWidth = zeroLineWidth;
+
+        mRulerScaleBackgroundColor = rulerScaleBackgroundColor;
+
+        mGapDistance = gapDistance;
+        mScaleTextColor = scaleTextColor;
+        mScaleTextSize = scaleTextSize;
+        mScaleTextMargin = scaleTextMargin;
+
     }
 
     private void initPaint() {
@@ -245,54 +350,56 @@ public class RulerScaleView extends View {
         canvas.drawLine(0, zeroLineY, mWidth, zeroLineY, mZeroLinePaint);
     }
 
+    private boolean isLongScale;
+    private boolean isTypeTop;
+    private float mCurrentX = 0;
+    private float mStartY;
+    private float mStopY;
+    private Paint mLinePaint;
+    private String mTextStr;
+    private float mTextLeft;
+    private float mTextBottom;
+    private Rect mRectText = new Rect();
     /**
      * 画大小刻度线 以及大刻度线对应的文字
      *
      * @param canvas
      */
     private void drawScaleLineAndText(Canvas canvas) {
-        boolean isLongScale;
-        float currentX = mOriginalWidth * 0.5f;
-        float startY;
-        float stopY;
-        Paint paint;
-        String textStr;
-        float textLeft;
-        float textBottom;
-        Rect rectText = new Rect();
-        boolean isTypeTop = mScaleLineType == TYPE_TOP;
+        mCurrentX = mOriginalWidth * 0.5f;
+        isTypeTop = mScaleLineType == TYPE_TOP;
         for (int i = 0; i <= mTotalGrid; i++) {
             isLongScale = (i - mGridOffset) % mGridGapNumber == 0;
             if (isTypeTop) {
-                startY = 0;
-                stopY = isLongScale ? mLongScaleLineHeight : mShortScaleLineHeight;
-                startY += mZeroLienWidth;
-                stopY += mZeroLienWidth;
+                mStartY = 0;
+                mStopY = isLongScale ? mLongScaleLineHeight : mShortScaleLineHeight;
+                mStartY += mZeroLienWidth;
+                mStopY += mZeroLienWidth;
             } else {
-                startY = isLongScale ? mHeight - mLongScaleLineHeight : mHeight - mShortScaleLineHeight;
-                stopY = mHeight;
-                startY -= mZeroLienWidth;
-                stopY -= mZeroLienWidth;
+                mStartY = isLongScale ? mHeight - mLongScaleLineHeight : mHeight - mShortScaleLineHeight;
+                mStopY = mHeight;
+                mStartY -= mZeroLienWidth;
+                mStopY -= mZeroLienWidth;
             }
-            paint = isLongScale ? mLongScaleLinePaint : mShortScaleLinePaint;
-            canvas.drawLine(currentX, startY, currentX, stopY, paint);
+            mLinePaint = isLongScale ? mLongScaleLinePaint : mShortScaleLinePaint;
+            canvas.drawLine(mCurrentX, mStartY, mCurrentX, mStopY, mLinePaint);
 
-            textStr = String.valueOf(mMinValue + mGridGapValue * i);
-            float measureTextWidth = mScaleTextPaint.measureText(textStr, 0, textStr.length());
-            textLeft = currentX - measureTextWidth * 0.5f;
+            mTextStr = String.valueOf(mMinValue + mGridGapValue * i);
+            float measureTextWidth = mScaleTextPaint.measureText(mTextStr, 0, mTextStr.length());
+            mTextLeft = mCurrentX - measureTextWidth * 0.5f;
 
-            mScaleTextPaint.getTextBounds(textStr, 0, textStr.length(), rectText);
+            mScaleTextPaint.getTextBounds(mTextStr, 0, mTextStr.length(), mRectText);
             if (isTypeTop) {
-                textBottom = mHeight - mScaleTextMargin;
+                mTextBottom = mHeight - mScaleTextMargin;
             } else {
-                textBottom = mScaleTextMargin + rectText.height();
+                mTextBottom = mScaleTextMargin + mRectText.height();
             }
             if (isLongScale) {
-                canvas.drawText(textStr, textLeft, textBottom, mScaleTextPaint);
+                canvas.drawText(mTextStr, mTextLeft, mTextBottom, mScaleTextPaint);
             }
 
-            Log.d(TAG, "drawScaleLineAndText: currentX: " + currentX);
-            currentX += mGapDistance;
+            Log.d(TAG, "drawScaleLineAndText: mCurrentX: " + mCurrentX);
+            mCurrentX += mGapDistance;
         }
     }
 

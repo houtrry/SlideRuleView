@@ -1,6 +1,7 @@
 package com.houtrry.slideruleview;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -50,7 +51,25 @@ public class TickMarkView extends View {
     }
 
     private void init(Context context, AttributeSet attrs) {
+        initAttrs(context, attrs);
         initPaint(context);
+    }
+
+    private void initAttrs(Context context, AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SlideRuleView);
+
+        int tickColor = typedArray.getColor(R.styleable.SlideRuleView_tick_line_color, Color.RED);
+        float tickWidth = typedArray.getDimension(R.styleable.SlideRuleView_tick_line_width, 10);
+        float tickHeight = typedArray.getDimension(R.styleable.SlideRuleView_tick_line_height, 50);
+
+        mTickMarkColor = tickColor;
+        mTickMarkWidth = tickWidth;
+        mTickMarkHeight = tickHeight;
+        Log.d(TAG, "initAttrs: ---------------------------------------------TickMarkView----start------------------------------------------------");
+        Log.d(TAG, "initAttrs: TickMarkView, tickColor: "+tickColor+", tickWidth: "+tickWidth+", tickHeight: "+tickHeight);
+        Log.d(TAG, "initAttrs: ---------------------------------------------TickMarkView----end------------------------------------------------");
+
+        typedArray.recycle();
     }
 
     private void initPaint(Context context) {
