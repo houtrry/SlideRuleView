@@ -61,15 +61,13 @@ public class TickMarkView extends View {
         int tickColor = typedArray.getColor(R.styleable.SlideRuleView_tick_line_color, Color.RED);
         float tickWidth = typedArray.getDimension(R.styleable.SlideRuleView_tick_line_width, 10);
         float tickHeight = typedArray.getDimension(R.styleable.SlideRuleView_tick_line_height, 50);
-
+        typedArray.recycle();
         mTickMarkColor = tickColor;
         mTickMarkWidth = tickWidth;
         mTickMarkHeight = tickHeight;
         Log.d(TAG, "initAttrs: ---------------------------------------------TickMarkView----start------------------------------------------------");
         Log.d(TAG, "initAttrs: TickMarkView, tickColor: "+tickColor+", tickWidth: "+tickWidth+", tickHeight: "+tickHeight);
         Log.d(TAG, "initAttrs: ---------------------------------------------TickMarkView----end------------------------------------------------");
-
-        typedArray.recycle();
     }
 
     private void initPaint(Context context) {

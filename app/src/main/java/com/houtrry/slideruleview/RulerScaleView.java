@@ -217,6 +217,8 @@ public class RulerScaleView extends View {
 
         int scaleTextMargin = typedArray.getDimensionPixelSize(R.styleable.SlideRuleView_scale_text_margin, 45);
 
+        typedArray.recycle();
+
 
         Log.d(TAG, "initAttrs: ---------------------------------------------RulerScaleView----start------------------------------------------------");
         Log.d(TAG, "initAttrs: RulerScaleView, minValue: "+minValue+", maxValue: "+maxValue+", valueDecimal: "+valueDecimal+", gridGapNumber: "+gridGapNumber+", gridOffset: " +gridOffset);
@@ -225,8 +227,6 @@ public class RulerScaleView extends View {
         Log.d(TAG, "initAttrs: RulerScaleView, zeroLineColor: "+zeroLineColor+", zeroLineWidth: "+zeroLineWidth+", rulerScaleBackgroundColor: "+rulerScaleBackgroundColor);
         Log.d(TAG, "initAttrs: RulerScaleView, gapDistance: "+gapDistance+", gapValue: "+gapValue+", scaleTextSize: "+scaleTextSize+", scaleTextColor: "+scaleTextColor+", scaleTextMargin: "+scaleTextMargin);
         Log.d(TAG, "initAttrs: ---------------------------------------------RulerScaleView----end------------------------------------------------");
-
-        typedArray.recycle();
 
         mMinValue = minValue;
         mMaxValue = maxValue;
@@ -277,7 +277,6 @@ public class RulerScaleView extends View {
         mScaleTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mScaleTextPaint.setColor(mScaleTextColor);
         mScaleTextPaint.setTextSize(mScaleTextSize);
-
     }
 
     @Override
@@ -307,8 +306,8 @@ public class RulerScaleView extends View {
     /**
      * 计算当前的值
      *
-     * @param left
-     * @return
+     * @param left 当前的left值
+     * @return 当前的值
      */
     public float calculateCurrentValue(int left) {
         Log.d(TAG, "calculateCurrentValue: left: " + left + ", (Math.abs(left): " + (Math.abs(left)));
@@ -322,8 +321,8 @@ public class RulerScaleView extends View {
     /**
      * 计算最近一个刻度线的位置(left)
      *
-     * @param currentDragLeft
-     * @return
+     * @param currentDragLeft 当前的left值
+     * @return 最近一个刻度线的位置
      */
     public int calculateLatestTick(int currentDragLeft) {
         int position = Math.round((Math.abs(currentDragLeft)) / mGapDistance);
@@ -334,7 +333,7 @@ public class RulerScaleView extends View {
     /**
      * 画背景
      *
-     * @param canvas
+     * @param canvas canvas
      */
     private void drawBackground(Canvas canvas) {
         canvas.drawColor(mRulerScaleBackgroundColor);
@@ -343,67 +342,70 @@ public class RulerScaleView extends View {
     /**
      * 画零线
      *
-     * @param canvas
+     * @param canvas canvas
      */
     private void drawZeroLine(Canvas canvas) {
         final float zeroLineY = mScaleLineType == TYPE_TOP ? mZeroLienWidth * 0.5f : mHeight - mZeroLienWidth * 0.5f;
         canvas.drawLine(0, zeroLineY, mWidth, zeroLineY, mZeroLinePaint);
     }
 
-    private boolean isLongScale;
-    private boolean isTypeTop;
-    private float mCurrentX = 0;
-    private float mStartY;
-    private float mStopY;
-    private Paint mLinePaint;
-    private String mTextStr;
-    private float mTextLeft;
-    private float mTextBottom;
-    private Rect mRectText = new Rect();
     /**
      * 画大小刻度线 以及大刻度线对应的文字
      *
-     * @param canvas
+     * @param canvas canvas
      */
     private void drawScaleLineAndText(Canvas canvas) {
-        mCurrentX = mOriginalWidth * 0.5f;
+        boolean isLongScale;
+        boolean isTypeTop;
+        float currentX;
+        float startY;
+        float stopY;
+        Paint linePaint;
+        String textStr;
+        float textLeft;
+        float textBottom;
+
+        Rect mRectText = new Rect();
+        currentX = mOriginalWidth * 0.5f;
         isTypeTop = mScaleLineType == TYPE_TOP;
         for (int i = 0; i <= mTotalGrid; i++) {
             isLongScale = (i - mGridOffset) % mGridGapNumber == 0;
             if (isTypeTop) {
-                mStartY = 0;
-                mStopY = isLongScale ? mLongScaleLineHeight : mShortScaleLineHeight;
-                mStartY += mZeroLienWidth;
-                mStopY += mZeroLienWidth;
+                startY = 0;
+                stopY = isLongScale ? mLongScaleLineHeight : mShortScaleLineHeight;
+                startY += mZeroLienWidth;
+                stopY += mZeroLienWidth;
             } else {
-                mStartY = isLongScale ? mHeight - mLongScaleLineHeight : mHeight - mShortScaleLineHeight;
-                mStopY = mHeight;
-                mStartY -= mZeroLienWidth;
-                mStopY -= mZeroLienWidth;
+                startY = isLongScale ? mHeight - mLongScaleLineHeight : mHeight - mShortScaleLineHeight;
+                stopY = mHeight;
+                startY -= mZeroLienWidth;
+                stopY -= mZeroLienWidth;
             }
-            mLinePaint = isLongScale ? mLongScaleLinePaint : mShortScaleLinePaint;
-            canvas.drawLine(mCurrentX, mStartY, mCurrentX, mStopY, mLinePaint);
+            linePaint = isLongScale ? mLongScaleLinePaint : mShortScaleLinePaint;
+            canvas.drawLine(currentX, startY, currentX, stopY, linePaint);
 
-            mTextStr = String.valueOf(mMinValue + mGridGapValue * i);
-            float measureTextWidth = mScaleTextPaint.measureText(mTextStr, 0, mTextStr.length());
-            mTextLeft = mCurrentX - measureTextWidth * 0.5f;
+            textStr = String.valueOf(mMinValue + mGridGapValue * i);
+            float measureTextWidth = mScaleTextPaint.measureText(textStr, 0, textStr.length());
+            textLeft = currentX - measureTextWidth * 0.5f;
 
-            mScaleTextPaint.getTextBounds(mTextStr, 0, mTextStr.length(), mRectText);
+            mScaleTextPaint.getTextBounds(textStr, 0, textStr.length(), mRectText);
             if (isTypeTop) {
-                mTextBottom = mHeight - mScaleTextMargin;
+                textBottom = mHeight - mScaleTextMargin;
             } else {
-                mTextBottom = mScaleTextMargin + mRectText.height();
+                textBottom = mScaleTextMargin + mRectText.height();
             }
             if (isLongScale) {
-                canvas.drawText(mTextStr, mTextLeft, mTextBottom, mScaleTextPaint);
+                canvas.drawText(textStr, textLeft, textBottom, mScaleTextPaint);
             }
 
-            Log.d(TAG, "drawScaleLineAndText: mCurrentX: " + mCurrentX);
-            mCurrentX += mGapDistance;
+            Log.d(TAG, "drawScaleLineAndText: mCurrentX: " + currentX);
+            currentX += mGapDistance;
         }
     }
 
-
+    /**
+     * 计算gap相关的信息
+     */
     private void calculateGap() {
         mTotalGrid = (int) Math.ceil((mMaxValue - mMinValue) / mGridGapValue);
         Log.d(TAG, "calculateGap: mTotalGrid: " + mTotalGrid);
@@ -415,7 +417,7 @@ public class RulerScaleView extends View {
      * 测量宽度
      *
      * @param widthMeasureSpec
-     * @return
+     * @return 期望宽度
      */
     private int measureWidth(int widthMeasureSpec) {
         int result;
@@ -436,7 +438,7 @@ public class RulerScaleView extends View {
      * 测量高度
      *
      * @param heightMeasureSpec
-     * @return
+     * @return 期望高度
      */
     private int measureHeight(int heightMeasureSpec) {
         int result;
@@ -453,7 +455,7 @@ public class RulerScaleView extends View {
     /**
      * 卷尺显示的最小值
      *
-     * @param minValue
+     * @param minValue 最小值
      */
     public RulerScaleView setMinValue(float minValue) {
         Log.d(TAG, "setMinValue: minValue: "+minValue);
