@@ -95,6 +95,7 @@
             <com.houtrry.slideruleview.SlidingScaleView
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
+                android:visibility="gone"
 
                 slidingScale:sliding_gap_distance="7dp"
                 slidingScale:sliding_grid_gap_number="10"
